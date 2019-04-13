@@ -159,31 +159,30 @@ def listen_linux(frame_rate=44100, interval=0.1):
                 if Devided_byte[0] == "201701978":
                     display (Devided_byte[1])
 
-                codec = RSCodec(FEC_BYTES).encode(Devided_byte[1].encode("utf-8"))
-                frequencys=[]
-                for n in codec:
-                    frequency_one =  (int(bin(n),2) & 0b11110000) >>4
-                    frequency_first_order = START_HZ+(STEP_HZ * frequency_one)
-                    frequencys.append(frequency_first_order)
+                    codec = RSCodec(FEC_BYTES).encode(Devided_byte[1].encode("utf-8"))
+                    frequencys=[]
+                    for n in codec:
+                       frequency_one =  (int(bin(n),2) & 0b11110000) >>4
+                       frequency_first_order = START_HZ+(STEP_HZ * frequency_one)
+                       frequencys.append(frequency_first_order)
 
-                    frequency_two = int(bin(n),2) &0b1111
-                    frequency_second_order = START_HZ+(STEP_HZ*frequency_two)
-                    frequencys.append(frequency_second_order)
+                       frequency_two = int(bin(n),2) &0b1111
+                       frequency_second_order = START_HZ+(STEP_HZ*frequency_two)
+                       frequencys.append(frequency_second_order)
 
-                    codec_index =  codec.index(n)
+                       codec_index =  codec.index(n)
                     
-
-                frequencys.append(HANDSHAKE_END_HZ)
+                    frequencys.append(HANDSHAKE_END_HZ)
             
 
-                p=pyaudio.PyAudio()
-                stream=p.open(format=pyaudio.paFloat32,
+                    p=pyaudio.PyAudio()
+                    stream=p.open(format=pyaudio.paFloat32,
                           channels=1,
                           rate=44100,
                           output=True)
              
-                for f in frequencys:
-                  stream.write(np.sin(2*np.pi*f*np.arange(0,1.5,1/44100)))
+                    for f in frequencys:
+                      stream.write(np.sin(2*np.pi*f*np.arange(0,1.5,1/44100)))
 
             except ReedSolomonError as e:
                 pass
