@@ -170,8 +170,7 @@ def listen_linux(frame_rate=44100, interval=0.1):
                        frequency_second_order = START_HZ+(STEP_HZ*frequency_two)
                        frequencys.append(frequency_second_order)
 
-                       codec_index =  codec.index(n)
-                    
+                                           
                     frequencys.append(HANDSHAKE_END_HZ)
             
 
